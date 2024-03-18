@@ -1,0 +1,71 @@
+pipeline:
+  name: arcticswolf-demo
+  identifier: arcticswolfdemo
+  projectIdentifier: anmolpsandbox
+  orgIdentifier: default
+  tags: {}
+  stages:
+    - stage:
+        name: regex-test
+        identifier: regextest
+        description: ""
+        type: Deployment
+        spec:
+          deploymentType: Kubernetes
+          environments:
+            metadata:
+              parallel: true
+            values: <+input>
+            filters:
+              - identifier: abc
+                type: tags
+                entities:
+                  - infrastructures
+                spec:
+                  tags: <+input>
+                  matchType: any
+          execution:
+            steps:
+              - step:
+                  name: Rollout Deployment
+                  identifier: rolloutDeployment
+                  type: K8sRollingDeploy
+                  timeout: 10m
+                  spec:
+                    skipDryRun: false
+                    pruningEnabled: false
+              - step:
+                  type: ShellScript
+                  name: ShellScript_1
+                  identifier: ShellScript_1
+                  spec:
+                    shell: Bash
+                    executionTarget: {}
+                    source:
+                      type: Inline
+                      spec:
+                        script: echo "hello World"
+                    environmentVariables: []
+                    outputVariables: []
+                  timeout: 10m
+            rollbackSteps:
+              - step:
+                  name: Rollback Rollout Deployment
+                  identifier: rollbackRolloutDeployment
+                  type: K8sRollingRollback
+                  timeout: 10m
+                  spec:
+                    pruningEnabled: false
+          services:
+            values:
+              - serviceRef: harnessguestbook
+              - serviceRef: otherservice
+            metadata:
+              parallel: true
+        tags: {}
+        failureStrategies:
+          - onFailure:
+              errors:
+                - AllErrors
+              action:
+                type: StageRollback
