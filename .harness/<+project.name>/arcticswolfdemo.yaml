@@ -83,3 +83,9 @@ pipeline:
                 - AllErrors
               action:
                 type: StageRollback
+  variables:
+    - name: preview
+      type: String
+      description: ""
+      required: true
+      value: <+input>.default(true).allowedValues(true,false)
