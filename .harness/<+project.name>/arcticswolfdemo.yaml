@@ -44,9 +44,16 @@ pipeline:
                     source:
                       type: Inline
                       spec:
-                        script: echo "hello World"
+                        script: |-
+                          echo "hello World"
+
+                          value='hello'
                     environmentVariables: []
-                    outputVariables: []
+                    outputVariables:
+                      - name: value
+                        type: String
+                        value: value
+                    includeInfraSelectors: false
                   timeout: 10m
               - step:
                   type: ShellScript
@@ -58,7 +65,9 @@ pipeline:
                     source:
                       type: Inline
                       spec:
-                        script: echo "Hello"
+                        script: |-
+                          echo "Hello"
+                          echo <+execution.steps.ShellScript_1.output.outputVariables.value>
                     environmentVariables: []
                     outputVariables: []
                   timeout: 10m
