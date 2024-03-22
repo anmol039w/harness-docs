@@ -55,8 +55,11 @@ pipeline:
                       spec:
                         script: |-
                           echo "Hello"
-                          echo<+execution.steps.ShellScript_1.output.outputVariables.value>
-                    environmentVariables: []
+                          echo $value
+                    environmentVariables:
+                      - name: value
+                        type: String
+                        value: <+execution.steps.ShellScript_1.output.outputVariables.value>
                     outputVariables: []
                   timeout: 10m
             rollbackSteps:
