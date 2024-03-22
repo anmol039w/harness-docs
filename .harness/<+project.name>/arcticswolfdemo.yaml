@@ -12,18 +12,6 @@ pipeline:
         type: Deployment
         spec:
           deploymentType: Kubernetes
-          environments:
-            metadata:
-              parallel: true
-            values: <+input>
-            filters:
-              - identifier: abc
-                type: tags
-                entities:
-                  - infrastructures
-                spec:
-                  tags: <+input>
-                  matchType: any
           execution:
             steps:
               - step:
@@ -79,12 +67,13 @@ pipeline:
                   timeout: 10m
                   spec:
                     pruningEnabled: false
-          services:
-            values:
-              - serviceRef: harnessguestbook
-              - serviceRef: otherservice
-            metadata:
-              parallel: true
+          environment:
+            environmentRef: env1
+            deployToAll: false
+            infrastructureDefinitions:
+              - identifier: env1_2
+          service:
+            serviceRef: harnessguestbook
         tags: {}
         failureStrategies:
           - onFailure:
