@@ -79,7 +79,9 @@ pipeline:
           service:
             serviceRef: harnessguestbook
         tags:
-          cluster: "120"
+          "120": ""
+          "125": ""
+          "130": ""
         failureStrategies:
           - onFailure:
               errors:
