@@ -56,7 +56,7 @@ pipeline:
                         script: |-
                           echo "Hello"
                           echo $value
-                          echo <+tags>
+                          echo <+stage.tags.*>
                     environmentVariables:
                       - name: value
                         type: String
