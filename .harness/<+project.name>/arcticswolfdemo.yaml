@@ -96,7 +96,7 @@ pipeline:
             value: <+input>.default(true).allowedValues(true,false)
         when:
           pipelineStatus: Success
-          condition: <+env.name> != "env1_1"
+          condition: <+env.name> != "env1_2"
   variables:
     - name: preview
       type: String
